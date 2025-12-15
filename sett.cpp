@@ -109,7 +109,7 @@ void sett::setup(void) {
 			theBtn = new reloadBtn(RELOAD_X,RELOAD_Y,mFilePath,this);	// Create the reload button.
 			if (theBtn) {																// If we got it..
 				addObj(theBtn);														// Add it to the screen.
-				dealExtrasBtn* dealBtn = new dealExtrasBtn(EXTRA_BTN_X,EXTRA_BTN_Y,32,32,OSPtr->stdIconPath(cross32));
+				dealExtrasBtn* dealBtn = new dealExtrasBtn(EXTRA_BTN_X,EXTRA_BTN_Y,32,32,OSPtr->getStdIconPath(cross32));
 				if (dealBtn) {
 					dealBtn->setGame(this);
 					addObj(dealBtn);
