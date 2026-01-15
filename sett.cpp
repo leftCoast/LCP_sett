@@ -33,19 +33,69 @@
 #define MSG_MS			5000
 #define LBL_X			30
 #define LBL_Y			3
-#define LBL_W			200
+#define LBL_W			145
 #define LBL_H			10
 
-#define PTS_X			200
+#define PTS_X			180
 #define PTS_Y			LBL_Y
-#define PTS_W			40
+#define PTS_W			30
 #define PTS_H			10
 
-
+#define README_X		218
+#define README_Y		0
 
 #define BACK_COLOR	&black
 
 #define UNCONNECTED_ANALOG_PIN  A1
+
+
+
+// **************************************************
+// ******************* sframe ***********************
+// **************************************************
+
+
+sframe::sframe(rect* inRect)
+	:drawObj(inRect) {  }
+
+
+sframe::~sframe(void) {  }
+
+				
+void sframe::drawSelf(void) { screen->drawRect(this,&black); }
+
+
+
+// **************************************************
+// ******************* readmeDB  ********************
+// **************************************************
+
+
+readmeDB::readmeDB(listener* inListener)
+	: alertObj("",inListener,noteAlert,true,false) {
+	
+	bmpObj*	aBmp;
+	rect		aRect(0,0,200,260);
+	sframe*	aFrame;
+	
+	x = 20;
+	width = 200;
+	height = 260;
+	theMsg->x = 12;
+	theMsg->y = 17;
+	okBtn->x = 152;
+	okBtn->y = 210;
+	aFrame = new sframe(&aRect);
+	ourPanel->setFilePath("readme.bmp");
+	aBmp = new bmpObj(aFrame,ourPanel->mFilePath);
+	aBmp->linkBefore(theMsg);
+	//aFrame->insetRect(1);
+	addObj(aFrame);
+}
+
+
+readmeDB::~readmeDB(void) { }		
+
 
 
 
@@ -91,9 +141,12 @@ void sett::setup(void) {
 	
 	long int		seed;
 	reloadBtn*	theBtn;
+	stdComBtn*	readmeBtn;
 	
 	seed = analogRead(UNCONNECTED_ANALOG_PIN);								// Tired of playing the same old game every time?
 	randomSeed(seed);																	// It's an antenna. Very random.	
+	readmeBtn = newStdBtn(README_X,README_Y,icon22,readmeCmd,this);	// We have instruction list to show the user.
+   addObj(readmeBtn);																// Add our readme button.
 	mesgPtr = new label(LBL_X,LBL_Y,LBL_W,LBL_H);							// Create the message label.
 	ptsPtr = new label(PTS_X,PTS_Y,PTS_W,PTS_H);								// Create the points message.
 	if (mesgPtr && ptsPtr) {														// If we got a label..
@@ -189,7 +242,6 @@ void sett::dealCards(int srtX,int srtY) {
 	int			cardNum;
 	int			i;
 	settCard*	aCard;
-	//bmpObj*		qcard;
 	int			extraY;
 	
 	setPoints(0);																	// Player starts at 0 points.
@@ -348,7 +400,21 @@ void  sett::setMsg(const char* text,float ms) {
 	mesgPtr->setValue(text);
 	msgTimer.setTime(ms);
 }
-							
+
+
+// Watching commands come in.
+void sett::handleCom(stdComs comID) {
+	
+	readmeDB*	ourReadme;
+	
+	if (comID==readmeCmd) {
+		ourReadme = new readmeDB(this);
+	} else {
+		panel::handleCom(comID);
+	}
+}
+
+
 void sett::loop(void) {
 
 	switch(ourState) {

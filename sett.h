@@ -1,6 +1,7 @@
 #ifndef sett_h
 #define sett_h
 
+#include <alertObj.h>
 #include <lilOS.h>
 #include <toneObj.h>
 #include <cardIndex.h>
@@ -19,6 +20,36 @@
 
 class selectQ;
 class settCard;
+
+
+
+// **************************************************
+// ******************* sframe ***********************
+// **************************************************
+
+
+class sframe : public drawObj {
+
+	public:
+				sframe(rect* inRect);
+				~sframe(void);
+				
+	virtual	void	drawSelf(void);
+};
+
+
+
+// **************************************************
+// ******************* readmeDB  ********************
+// **************************************************
+
+
+class readmeDB : public alertObj {
+
+	public:
+				readmeDB(listener* inListener);
+				~readmeDB(void);			
+};
 
 
 
@@ -68,6 +99,7 @@ class sett :  public panel {
 				void	selectMe(settCard* inCard);
 				void	unSelectMe(settCard* inCard);
 				void	setMsg(const char* text,float ms);
+	virtual	void  handleCom(stdComs comID);
 	virtual	void	loop(void);
 	virtual	void	closing(void);
 			
