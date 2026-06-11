@@ -115,6 +115,14 @@ sett::sett(int ourAppID)
 	setFilePath(SELECT_IMAGE);			// Get the file path for selected BG.
 	heapStr(&selectPath,mFilePath);	// Create a local copy of the path.
 	
+	//DEBUG
+	Serial.print("SETT cardPath [");
+	Serial.print(cardPath);
+	Serial.println("]");
+	Serial.print("SETT selectPath [");
+	Serial.print(selectPath);
+	Serial.println("]");
+	
 	selectList	= new selectQ();
 	for(int i=0;i<MAX_CARDS;i++) {
 		cardPtrs[i] = NULL;
